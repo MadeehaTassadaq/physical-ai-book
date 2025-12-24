@@ -23,11 +23,9 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        working-directory: ./physical-ai-robotics-book
         run: npm install
 
       - name: Build
-        working-directory: ./physical-ai-robotics-book
         run: npm run build
 
       - name: Setup Pages
@@ -36,7 +34,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: ./physical-ai-robotics-book/build
+          path: ./build
 
       - name: Deploy to GitHub Pages
         id: deployment
