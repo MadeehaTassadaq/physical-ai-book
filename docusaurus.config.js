@@ -20,14 +20,14 @@ const config = {
   },
 
   // Set the production url of your site here
-  url: 'https://your-username.github.io',
+  url: 'https://madeehatassadaq.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/physical-ai-book/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: '[Your-GitHub-Username]', // Usually your GitHub org/user name.
+  organizationName: 'MadeehaTassadaq', // Usually your GitHub org/user name.
   projectName: 'physical-ai-book', // Usually your repo name.
   deploymentBranch: 'gh-pages',
 
@@ -79,7 +79,7 @@ const config = {
             label: 'Book',
           },
           {
-            href: 'https://github.com/[Your-GitHub-Username]/physical-ai-book',
+            href: 'https://github.com/MadeehaTassadaq/physical-ai-book',
             label: 'GitHub',
             position: 'right',
           },
