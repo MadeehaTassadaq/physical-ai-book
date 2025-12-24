@@ -19,8 +19,8 @@ const config = {
     v4: true, // Improve compatibility with the upcoming Docusaurus v4
   },
 
-  // Set the production url of your site here
-  url: 'https://madeehatassadaq.github.io',
+  // Set the production url of your site here (Azure Static Web Apps URL)
+  url: 'https://agreeable-sand-0efbb301e.4.azurestaticapps.net',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/physical-ai-book/',
