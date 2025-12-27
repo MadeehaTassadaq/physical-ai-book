@@ -48,6 +48,7 @@ const config = {
       ({
         docs: {
           sidebarPath: "./sidebars.js",
+          routeBasePath: "/", // Add this line to make docs the home page
         },
         blog: false,
         theme: {

@@ -7,8 +7,9 @@ export default function Root({ children }) {
   return (
     <ChatProvider>
       {children}
-      {/* This ensures the Chat UI only renders in the browser */}
-      <BrowserOnly>{() => <ChatComponent />}</BrowserOnly>
+      <BrowserOnly fallback={<div>Loading Chat...</div>}>
+        {() => <ChatComponent />}
+      </BrowserOnly>
     </ChatProvider>
   );
 }
