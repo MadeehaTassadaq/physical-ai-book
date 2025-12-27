@@ -1,6 +1,14 @@
-# Website
+# Physical AI Robotics Book
 
-This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+This repository contains the source code and documentation for the Physical AI Robotics Book project.
+
+## About
+
+This is a Docusaurus-based documentation site for physical AI robotics concepts, featuring:
+
+- Interactive RAG chatbot with selection support
+- Azure Static Web Apps deployment configuration
+- GitHub Pages deployment workflow
 
 ## Installation
 
@@ -39,3 +47,10 @@ GIT_USER=<Your GitHub username> yarn deploy
 ```
 
 If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+
+## Features
+
+- Docusaurus documentation site
+- Floating RAG chatbot for interactive Q&A
+- Responsive design
+- GitHub integration
