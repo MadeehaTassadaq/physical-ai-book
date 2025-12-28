@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useChat } from '../../contexts/ChatContext';
 import { sendMessage as apiSendMessage } from '../../services/chat-api';
 import { getSelectionContext } from '../../utils/text-selection';
+import useSelectionAI from '../../hooks/useSelectionAI';
 import ChatModal from './ChatModal';
 import './Chat.css';
 
@@ -9,8 +10,16 @@ const ChatComponent = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { messages, addMessage, isLoading, setLoading, sessionId, setSessionId, error, clearError } = useChat();
   const [inputValue, setInputValue] = useState('');
+  const [hasActiveSelection, setHasActiveSelection] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Use the selection hook
+  const {
+    selectedText,
+    sendSelectionToBackend,
+    clearSelection,
+  } = useSelectionAI('https://rag-chatbot-4-1bvx.onrender.com/api', sessionId);
 
   // Scroll to bottom of messages
   const scrollToBottom = () => {
@@ -20,6 +29,15 @@ const ChatComponent = () => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Monitor selected text changes
+  useEffect(() => {
+    if (selectedText && selectedText.length > 0) {
+      setHasActiveSelection(true);
+    } else {
+      setHasActiveSelection(false);
+    }
+  }, [selectedText]);
 
   // Function to send message to backend
   const sendMessage = async () => {
@@ -34,11 +52,32 @@ const ChatComponent = () => {
 
     // Add user message to chat
     addMessage(userMessage);
+
+    // If there's selected text, show it in the UI
+    if (hasActiveSelection && selectedText) {
+      const selectionIndicator = {
+        id: Date.now() - 1,
+        text: `📖 Context: "${selectedText.substring(0, 100)}${selectedText.length > 100 ? '...' : ''}"`,
+        sender: 'system',
+        timestamp: new Date().toISOString(),
+      };
+      addMessage(selectionIndicator);
+    }
+
     setInputValue('');
     setLoading(true);
     clearError(); // Clear any previous errors
 
     try {
+      // Send selected text to backend first if available
+      if (hasActiveSelection && selectedText) {
+        const selectionResult = await sendSelectionToBackend(selectedText);
+        // Update session ID if returned from selection endpoint
+        if (selectionResult.success && selectionResult.data?.session_id) {
+          setSessionId(selectionResult.data.session_id);
+        }
+      }
+
       // Get the current selection context
       const context = getSelectionContext();
 
@@ -58,6 +97,12 @@ const ChatComponent = () => {
       };
 
       addMessage(botMessage);
+
+      // Clear the selection after successful response
+      if (hasActiveSelection) {
+        clearSelection();
+        setHasActiveSelection(false);
+      }
     } catch (error) {
       console.error('Error sending message:', error);
       const errorMessage = {
@@ -148,9 +193,11 @@ const ChatComponent = () => {
                       </div>
                     )}
                   </div>
-                  <span className="message-timestamp">
-                    {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                  </span>
+                  {message.sender !== 'system' && (
+                    <span className="message-timestamp">
+                      {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  )}
                 </div>
               ))
             )}
@@ -168,13 +215,35 @@ const ChatComponent = () => {
             <div ref={messagesEndRef} />
           </div>
 
+          {/* Selection indicator */}
+          {hasActiveSelection && selectedText && (
+            <div className="selection-indicator">
+              <div className="selection-content">
+                <span className="selection-icon">📖</span>
+                <span className="selection-text">
+                  Selected: "{selectedText.substring(0, 50)}{selectedText.length > 50 ? '...' : ''}"
+                </span>
+              </div>
+              <button
+                className="clear-selection"
+                onClick={() => {
+                  clearSelection();
+                  setHasActiveSelection(false);
+                }}
+                title="Clear selection"
+              >
+                ×
+              </button>
+            </div>
+          )}
+
           <div className="chat-input-area">
             <textarea
               ref={inputRef}
               value={inputValue}
               onChange={(e) => setInputValue(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Ask about the book content..."
+              placeholder={hasActiveSelection ? "Ask about the selected text..." : "Ask about the book content..."}
               rows="1"
               disabled={isLoading}
             />

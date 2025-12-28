@@ -5,14 +5,14 @@ import { useState, useEffect, useCallback } from 'react';
  * functionality to send the selected text to the backend /chat/selection endpoint.
  *
  * @param {string} backendUrl - The base URL of the backend API
+ * @param {string} externalSessionId - Optional external session ID to use
  * @returns {Object} - Object containing selected text, loading state, error state,
  *                    and functions to handle selection and send to backend
  */
-const useSelectionAI = (backendUrl = '') => {
+const useSelectionAI = (backendUrl = '', externalSessionId = null) => {
   const [selectedText, setSelectedText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [sessionId, setSessionId] = useState(null);
 
   // Function to get the currently selected text
   const getSelectedText = useCallback(() => {
@@ -68,6 +68,8 @@ const useSelectionAI = (backendUrl = '') => {
     setError(null);
 
     try {
+      const currentSessionId = externalSessionId || localStorage.getItem('chat_session_id') || null;
+
       const response = await fetch(`${backendUrl}/chat/selection`, {
         method: 'POST',
         headers: {
@@ -75,7 +77,7 @@ const useSelectionAI = (backendUrl = '') => {
         },
         body: JSON.stringify({
           selected_text: textToSend,
-          session_id: sessionId || localStorage.getItem('chat_session_id') || null,
+          session_id: currentSessionId,
         }),
       });
 
@@ -85,9 +87,8 @@ const useSelectionAI = (backendUrl = '') => {
 
       const data = await response.json();
 
-      // Store session ID for future requests
-      if (data.session_id) {
-        setSessionId(data.session_id);
+      // Store session ID for future requests if not using external
+      if (data.session_id && !externalSessionId) {
         localStorage.setItem('chat_session_id', data.session_id);
       }
 
@@ -99,7 +100,7 @@ const useSelectionAI = (backendUrl = '') => {
       setIsLoading(false);
       return { success: false, error: err.message };
     }
-  }, [selectedText, backendUrl, sessionId]);
+  }, [selectedText, backendUrl, externalSessionId]);
 
   // Function to clear the current selection
   const clearSelection = useCallback(() => {
@@ -128,7 +129,6 @@ const useSelectionAI = (backendUrl = '') => {
     selectedText,
     isLoading,
     error,
-    sessionId,
     getSelectedText,
     sendSelectionToBackend,
     clearSelection,
