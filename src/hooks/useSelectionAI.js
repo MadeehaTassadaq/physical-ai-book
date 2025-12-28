@@ -16,7 +16,7 @@ const useSelectionAI = (backendUrl = '', externalSessionId = null) => {
 
   // Function to get the currently selected text
   const getSelectedText = useCallback(() => {
-    return window.getSelection?.toString().trim() || '';
+    return window.getSelection?.()?.toString().trim() || '';
   }, []);
 
   // Function to handle text selection
