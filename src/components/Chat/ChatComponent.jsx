@@ -51,9 +51,9 @@ const ChatComponent = () => {
 
       const botMessage = {
         id: Date.now() + 1,
-        text: response.message,
+        text: response.response,
         sender: 'bot',
-        citations: response.metadata?.sources || [],
+        citations: response.citations || [],
         timestamp: new Date().toISOString(),
       };
 
