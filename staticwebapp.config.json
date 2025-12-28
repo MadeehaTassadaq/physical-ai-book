@@ -2,7 +2,16 @@
   "navigationFallback": {
     "rewrite": "/index.html"
   },
+  "responseOverrides": {
+    "404": {
+      "rewrite": "/index.html",
+      "statusCode": 200
+    }
+  },
   "globalHeaders": {
-    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://rag-chatbot-3-jotu.onrender.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://rag-chatbot-3-jotu.onrender.com;"
+    "Content-Security-Policy": "default-src 'self'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://rag-chatbot-3-jotu.onrender.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; connect-src 'self' https://rag-chatbot-3-jotu.onrender.com https://agreeable-sand-0efbb301e.4.azurestaticapps.net;",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "SAMEORIGIN",
+    "Referrer-Policy": "no-referrer-when-downgrade"
   }
 }
