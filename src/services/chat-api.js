@@ -1,5 +1,5 @@
 // API service to communicate with the RAG backend
-const API_BASE_URL = 'https://rag-chatbot-3-jotu.onrender.com';
+const API_BASE_URL = 'https://rag-chatbot-4-1bvx.onrender.com';
 
 /**
  * Send a message to the chat API
