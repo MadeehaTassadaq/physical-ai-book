@@ -1,24 +1,325 @@
-/* Custom CSS for Physical AI & Humanoid Robotics book */
-/* This file is referenced in docusaurus.config.js */
+/* ==========================================================================
+   Physical AI & Humanoid Robotics - Premium Documentation Theme
+   ========================================================================== */
 
 /* Import the chat component styles */
 @import url('../components/Chat/Chat.css');
 
-/* You can add any global styles here */
+/* --------------------------------------------------------------------------
+   CSS Custom Properties - Design Token System
+   -------------------------------------------------------------------------- */
 :root {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  /* Brand Colors - Teal/Cyan AI Theme */
+  --ifm-color-primary: #0d9488;
+  --ifm-color-primary-dark: #0f766e;
+  --ifm-color-primary-darker: #115e59;
+  --ifm-color-primary-darkest: #134e4a;
+  --ifm-color-primary-light: #14b8a6;
+  --ifm-color-primary-lighter: #2dd4bf;
+  --ifm-color-primary-lightest: #5eead4;
+
+  /* Typography System */
+  --ifm-font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --ifm-heading-font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --ifm-font-size-base: 1rem;
+  --ifm-line-height-base: 1.625;
+  --ifm-heading-font-weight: 600;
+
+  /* Spacing Scale */
+  --ifm-spacing-horizontal: 1.5rem;
+  --ifm-navbar-height: 4rem;
+  --ifm-menu-color-background-active: rgba(13, 148, 136, 0.08);
+  --ifm-menu-color-background-hover: rgba(13, 148, 136, 0.04);
+
+  /* Borders & Radius */
+  --ifm-global-radius: 8px;
+  --ifm-global-radius-md: 12px;
+  --ifm-global-radius-lg: 16px;
+  --ifm-global-shadow-lw: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --ifm-global-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --ifm-global-shadow-tl: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+  /* Code Blocks */
+  --ifm-code-font-size: 0.875em;
+  --ifm-pre-border-radius: var(--ifm-global-radius-md);
+  --docusaurus-highlighted-code-line-bg: rgba(13, 148, 136, 0.1);
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Dark mode adjustments */
-html[data-theme='dark'] {
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+/* --------------------------------------------------------------------------
+   Dark Mode Overrides
+   -------------------------------------------------------------------------- */
+[data-theme='dark'] {
+  --ifm-color-primary: #2dd4bf;
+  --ifm-color-primary-dark: #14b8a6;
+  --ifm-color-primary-darker: #0d9488;
+  --ifm-color-primary-darkest: #115e59;
+  --ifm-color-primary-light: #5eead4;
+  --ifm-color-primary-lighter: #99f6e4;
+  --ifm-color-primary-lightest: #ccfbf1;
+
+  --ifm-background-color: #0f172a;
+  --ifm-background-surface-color: #1e293b;
+
+  --docusaurus-highlighted-code-line-bg: rgba(45, 212, 191, 0.15);
+
+  --ifm-menu-color-background-active: rgba(45, 212, 191, 0.12);
+  --ifm-menu-color-background-hover: rgba(45, 212, 191, 0.06);
 }
 
-/* Additional custom styles can be added here */
+/* --------------------------------------------------------------------------
+   Navbar Enhancements
+   -------------------------------------------------------------------------- */
+.navbar {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.85);
+  border-bottom: 1px solid rgba(13, 148, 136, 0.1);
+}
+
+[data-theme='dark'] .navbar {
+  background: rgba(15, 23, 42, 0.85);
+  border-bottom-color: rgba(45, 212, 191, 0.15);
+}
+
+.navbar__title {
+  font-weight: 600;
+  font-size: 1.125rem;
+  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, #0891b2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.navbar__item {
+  font-weight: 500;
+  font-size: 0.9375rem;
+  color: var(--ifm-text-color);
+  transition: color var(--transition-fast);
+}
+
+.navbar__item:hover {
+  color: var(--ifm-color-primary);
+}
+
+/* --------------------------------------------------------------------------
+   Sidebar Improvements
+   -------------------------------------------------------------------------- */
+.menu__link {
+  border-radius: var(--ifm-global-radius);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  padding: var(--ifm-menu-link-padding-vertical) var(--ifm-menu-link-padding-horizontal);
+  transition: all var(--transition-fast);
+}
+
+.menu__link--active {
+  background: var(--ifm-menu-color-background-active);
+  color: var(--ifm-color-primary);
+  font-weight: 500;
+}
+
+.menu__link:hover {
+  background: var(--ifm-menu-color-background-hover);
+  color: var(--ifm-color-primary-dark);
+}
+
+.menu__link--sublist::after {
+  border-width: 2px;
+  opacity: 0.6;
+  transition: transform var(--transition-fast);
+}
+
+.menu__list-item--collapsed .menu__link--sublist::after {
+  transform: rotate(90deg);
+}
+
+/* --------------------------------------------------------------------------
+   Content Area Enhancements
+   -------------------------------------------------------------------------- */
+.markdown {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--ifm-text-color);
+}
+
+.markdown h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: var(--ifm-spacing-vertical);
+  background: linear-gradient(135deg, var(--ifm-color-primary) 0%, #0891b2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.markdown h2 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(13, 148, 136, 0.2);
+}
+
+.markdown h3 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* --------------------------------------------------------------------------
+   Code Blocks - Premium Styling
+   -------------------------------------------------------------------------- */
+.prism-code {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 0.875em;
+  border-radius: var(--ifm-pre-border-radius);
+  border: 1px solid rgba(13, 148, 136, 0.2);
+}
+
+div[class*='language-'] {
+  border-radius: var(--ifm-pre-border-radius);
+  box-shadow: var(--ifm-global-shadow-md);
+}
+
+div[class*='language-'] .token.comment,
+div[class*='language-'] .token.prolog,
+div[class*='language-'] .token.doctype,
+div[class*='language-'] .token.cdata {
+  color: #64748b;
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   Admonitions (Callouts)
+   -------------------------------------------------------------------------- */
+.alert {
+  border-radius: var(--ifm-global-radius-md);
+  border: 1px solid;
+  padding: var(--ifm-spacing-vertical) var(--ifm-spacing-horizontal);
+  margin: var(--ifm-spacing-vertical) 0;
+}
+
+.alert--info {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.alert--warning {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.alert--danger {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.alert--success {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   Tables
+   -------------------------------------------------------------------------- */
+.markdown table {
+  border-radius: var(--ifm-global-radius-md);
+  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+  margin: var(--ifm-spacing-vertical) 0;
+  box-shadow: var(--ifm-global-shadow-md);
+}
+
+.markdown table th {
+  background: rgba(13, 148, 136, 0.08);
+  font-weight: 600;
+  text-align: left;
+  padding: var(--ifm-spacing-vertical) var(--ifm-spacing-horizontal);
+  border-bottom: 2px solid rgba(13, 148, 136, 0.2);
+}
+
+.markdown table td {
+  padding: var(--ifm-spacing-vertical) var(--ifm-spacing-horizontal);
+  border-bottom: 1px solid rgba(13, 148, 136, 0.1);
+}
+
+.markdown table tr:last-child td {
+  border-bottom: none;
+}
+
+.markdown table tr:hover td {
+  background: rgba(13, 148, 136, 0.04);
+}
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+.footer {
+  background: linear-gradient(180deg, rgba(13, 148, 136, 0.05) 0%, transparent 100%);
+  border-top: 1px solid rgba(13, 148, 136, 0.1);
+}
+
+.footer__title {
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+}
+
+.footer__link-item {
+  color: var(--ifm-text-color);
+  transition: color var(--transition-fast);
+}
+
+.footer__link-item:hover {
+  color: var(--ifm-color-primary);
+}
+
+/* --------------------------------------------------------------------------
+   Responsive Adjustments
+   -------------------------------------------------------------------------- */
+@media (max-width: 996px) {
+  :root {
+    --ifm-spacing-horizontal: 1rem;
+  }
+
+  .navbar__title {
+    font-size: 1rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility Enhancements
+   -------------------------------------------------------------------------- */
+:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Smooth scrolling for users who haven't disabled it */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
